@@ -1,0 +1,7 @@
+﻿services:
+  rootstechnicaltest.api:
+    image: rootstechnicaltest.api
+    build:
+      context: .
+      dockerfile: RootsTechnicalTest.Api/Dockerfile
+
