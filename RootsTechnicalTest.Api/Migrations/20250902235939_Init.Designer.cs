@@ -11,7 +11,7 @@ using RootsTechnicalTest.Api.Data;
 namespace RootsTechnicalTest.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250902224315_Init")]
+    [Migration("20250902235939_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace RootsTechnicalTest.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RootsTechnicalTest.Api.Domain.CarBrand", b =>
+            modelBuilder.Entity("RootsTechnicalTest.Api.Domain.MarcasAutos", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace RootsTechnicalTest.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarBrands", (string)null);
+                    b.ToTable("MarcasAutos", (string)null);
 
                     b.HasData(
                         new
@@ -63,6 +63,18 @@ namespace RootsTechnicalTest.Api.Migrations
                             Id = 3,
                             Country = "Germany",
                             Name = "Volkswagen"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Country = "Bulgaria",
+                            Name = "Honda"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Country = "Japan",
+                            Name = "Mazda"
                         });
                 });
 #pragma warning restore 612, 618

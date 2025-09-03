@@ -2,18 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using RootsTechnicalTest.Api.Domain;
 
 namespace RootsTechnicalTest.Api.Data;
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : Microsoft.EntityFrameworkCore.DbContext(options)
 {
     /// Represents the CarBrands table.
-    public DbSet<CarBrand> CarBrands => Set<CarBrand>();
+    public DbSet<MarcasAutos> CarBrands => Set<MarcasAutos>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Entity mapping
-        modelBuilder.Entity<CarBrand>(entity =>
+        modelBuilder.Entity<MarcasAutos>(entity =>
         {
             // Map to table "CarBrands"
-            entity.ToTable("CarBrands");
+            entity.ToTable("MarcasAutos");
 
             // Primary key
             entity.HasKey(x => x.Id);
@@ -29,10 +29,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         // HasData is applied via migrations. After adding a migration and updating
         // the database, EF will insert (or update) these rows to match the model snapshot.
-        modelBuilder.Entity<CarBrand>().HasData(
-            new CarBrand { Id = 1, Name = "Toyota",     Country = "Japan" },
-            new CarBrand { Id = 2, Name = "Ford",       Country = "United States" },
-            new CarBrand { Id = 3, Name = "Volkswagen", Country = "Germany" }
+        modelBuilder.Entity<MarcasAutos>().HasData(
+            new MarcasAutos { Id = 1, Name = "Toyota", Country = "Japan" },
+            new MarcasAutos { Id = 2, Name = "Ford", Country = "United States" },
+            new MarcasAutos { Id = 3, Name = "Volkswagen", Country = "Germany" },
+            new MarcasAutos { Id = 4, Name = "Honda", Country = "Bulgaria" },
+            new MarcasAutos { Id = 5, Name = "Mazda", Country = "Japan" }
         );
     }
 }

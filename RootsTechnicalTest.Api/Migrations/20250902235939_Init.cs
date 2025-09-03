@@ -14,7 +14,7 @@ namespace RootsTechnicalTest.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CarBrands",
+                name: "MarcasAutos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -24,17 +24,19 @@ namespace RootsTechnicalTest.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarBrands", x => x.Id);
+                    table.PrimaryKey("PK_MarcasAutos", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
-                table: "CarBrands",
+                table: "MarcasAutos",
                 columns: new[] { "Id", "Country", "Name" },
                 values: new object[,]
                 {
                     { 1, "Japan", "Toyota" },
                     { 2, "United States", "Ford" },
-                    { 3, "Germany", "Volkswagen" }
+                    { 3, "Germany", "Volkswagen" },
+                    { 4, "Bulgaria", "Honda" },
+                    { 5, "Japan", "Mazda" }
                 });
         }
 
@@ -42,7 +44,7 @@ namespace RootsTechnicalTest.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CarBrands");
+                name: "MarcasAutos");
         }
     }
 }

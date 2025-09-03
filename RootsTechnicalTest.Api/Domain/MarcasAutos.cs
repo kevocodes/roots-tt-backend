@@ -2,9 +2,8 @@ namespace RootsTechnicalTest.Api.Domain;
 
 /// <summary>
 /// Domain entity that represents a car brand registered in the system.
-/// Kept as a simple POCO to avoid framework coupling.
 /// </summary>
-public class CarBrand
+public class MarcasAutos
 {
     public int Id { get; set; }
 
@@ -14,8 +13,7 @@ public class CarBrand
     public required string Name { get; set; }
 
     /// <summary>
-    /// Optional country of origin (e.g., "Japan"). Not required for the test,
-    /// but useful to show minimal realistic modeling.
+    /// Optional country of origin (e.g., "Japan").
     /// </summary>
     public string? Country { get; set; }
 }

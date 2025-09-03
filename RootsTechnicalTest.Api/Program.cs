@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using RootsTechnicalTest.Api.Data;
 using Scalar.AspNetCore;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using RootsTechnicalTest.Api.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,6 +1,0 @@
-@RootsTechnicalTest.Api_HostAddress = http://localhost:5049
-
-GET {{RootsTechnicalTest.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
