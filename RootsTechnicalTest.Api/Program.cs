@@ -12,9 +12,10 @@ var connectionString = builder.Configuration.GetConnectionString("Postgres")
                        ?? Environment.GetEnvironmentVariable("POSTGRES_CONNECTION")
                        ?? throw new InvalidOperationException("Postgres connection string not configured.");
 
-
 // Register DbContext with Npgsql provider.
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
+
+// Add Controllers
 builder.Services.AddControllers();
 
 // Generate Open API docs

@@ -1,7 +1,50 @@
 ﻿services:
-  rootstechnicaltest.api:
-    image: rootstechnicaltest.api
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mysecretpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-rootsdb}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    profiles: ["dev"]
+
+  api:
     build:
       context: .
       dockerfile: RootsTechnicalTest.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: >
+        Host=db;Port=5432;Database=${POSTGRES_DB:-rootsdb};
+        Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-root}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    profiles: ["dev"]
 
+  tests:
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    working_dir: /src
+    volumes:
+      - .:/src
+    environment:
+      ASPNETCORE_ENVIRONMENT: Test
+    command: >
+      bash -lc "dotnet restore &&
+                dotnet test --collect:'XPlat Code Coverage' --settings /src/coverlet.runsettings --results-directory TestResults -v:m"
+    profiles: ["test"]
+
+volumes:
+  pgdata:

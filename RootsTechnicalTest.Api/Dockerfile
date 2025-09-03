@@ -1,23 +1,18 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-USER $APP_UID
+﻿# --- build ---
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+COPY RootsTechnicalTest.sln ./
+COPY RootsTechnicalTest.Api/RootsTechnicalTest.Api.csproj RootsTechnicalTest.Api/
+RUN dotnet restore RootsTechnicalTest.Api/RootsTechnicalTest.Api.csproj
+
+COPY . .
+RUN dotnet publish RootsTechnicalTest.Api/RootsTechnicalTest.Api.csproj -c Release -o /app/publish /p:UseAppHost=false
+
+# --- runtime ---
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
-
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["RootsTechnicalTest.Api/RootsTechnicalTest.Api.csproj", "RootsTechnicalTest.Api/"]
-RUN dotnet restore "RootsTechnicalTest.Api/RootsTechnicalTest.Api.csproj"
-COPY . .
-WORKDIR "/src/RootsTechnicalTest.Api"
-RUN dotnet build "./RootsTechnicalTest.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./RootsTechnicalTest.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+ENV ASPNETCORE_URLS=http://+:8080
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "RootsTechnicalTest.Api.dll"]

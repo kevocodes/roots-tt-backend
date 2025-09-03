@@ -7,56 +7,45 @@ using RootsTechnicalTest.Api.Domain;
 
 namespace RootsTechnicalTest.Tests;
 
-/// <summary>
-/// Unit tests for MarcasAutosController using EF Core InMemory provider.
-/// </summary>
 public class MarcasAutosControllerTests
 {
-    /// <summary>
-    /// Verifies the controller returns HTTP 200 with the seeded list ordered by Id.
-    /// </summary>
+    // Should return 200 OK and the 5 seeded items ordered by Id.
     [Fact]
-    public async Task GetAll_ReturnsOk_WithSeededBrands_InOrder()
+    public async Task GetAllReturnsOkWithSeededBrandsInOrder()
     {
-        // Arrange: create an isolated in-memory DB and seed data
-        using var ctx = TestDbHelper.CreateContext(nameof(GetAll_ReturnsOk_WithSeededBrands_InOrder), seed: true);
+        using var ctx = TestDbHelper.CreateContext(nameof(GetAllReturnsOkWithSeededBrandsInOrder), seed: true);
         var controller = new MarcasAutosController(ctx);
 
-        // Act
         var result = await controller.GetAll();
 
-        // Assert
         var ok = Assert.IsType<OkObjectResult>(result.Result);
         var list = Assert.IsAssignableFrom<IEnumerable<MarcasAutos>>(ok.Value);
 
         Assert.Equal(5, list.Count());
-        Assert.True(list.Select(x => x.Id).SequenceEqual(list.Select(x => x.Id).OrderBy(id => id)),
-            "The controller should return brands ordered by Id ascending.");
+
+        var ids = list.Select(x => x.Id).ToArray();
+        Assert.Equal(ids.OrderBy(i => i), ids); // Enforces ascending order by Id.
     }
 
-    /// <summary>
-    /// Verifies the controller returns HTTP 200 and an empty list when there is no data.
-    /// </summary>
+    // Should return 200 OK and an empty list when there is no data.
     [Fact]
-    public async Task GetAll_ReturnsEmptyList_WhenNoData()
+    public async Task GetAllReturnsEmptyListWhenNoData()
     {
-        // Arrange: empty in-memory DB
-        using var ctx = TestDbHelper.CreateContext(nameof(GetAll_ReturnsEmptyList_WhenNoData));
+        using var ctx = TestDbHelper.CreateContext(nameof(GetAllReturnsEmptyListWhenNoData));
         var controller = new MarcasAutosController(ctx);
 
-        // Act
         var result = await controller.GetAll();
 
-        // Assert
         var ok = Assert.IsType<OkObjectResult>(result.Result);
         var list = Assert.IsAssignableFrom<IEnumerable<MarcasAutos>>(ok.Value);
         Assert.Empty(list);
     }
-    
+
+    // Should never return items with null/empty Name.
     [Fact]
-    public async Task GetAll_ReturnsJsonResultWithNonNullNames()
+    public async Task GetAllReturnsItemsWithNonEmptyNames()
     {
-        using var ctx = TestDbHelper.CreateContext(nameof(GetAll_ReturnsJsonResultWithNonNullNames), seed: true);
+        using var ctx = TestDbHelper.CreateContext(nameof(GetAllReturnsItemsWithNonEmptyNames), seed: true);
         var controller = new MarcasAutosController(ctx);
 
         var result = await controller.GetAll();
@@ -65,5 +54,4 @@ public class MarcasAutosControllerTests
         var list = Assert.IsAssignableFrom<IEnumerable<MarcasAutos>>(ok.Value);
         Assert.All(list, item => Assert.False(string.IsNullOrWhiteSpace(item.Name)));
     }
-
 }

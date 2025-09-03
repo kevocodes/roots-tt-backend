@@ -5,8 +5,8 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>lcov,cobertura</Format>
-          <ExcludeByFile>**/Migrations/*.cs</ExcludeByFile>
-          <Exclude>[RootsTechnicalTest.Api]RootsTechnicalTest.Api.Migrations.*</Exclude>
+          <ExcludeByFile>**/Migrations/*.cs,**/Program.cs</ExcludeByFile>
+          <Exclude>[RootsTechnicalTest.Api]Program;[RootsTechnicalTest.Api]RootsTechnicalTest.Api.Migrations.*</Exclude>
           <CoverletOutput>TestResults/coverage</CoverletOutput>
           <UseSourceLink>true</UseSourceLink>
         </Configuration>

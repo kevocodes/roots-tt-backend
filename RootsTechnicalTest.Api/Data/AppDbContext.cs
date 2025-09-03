@@ -24,7 +24,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : Microsoft.En
                   .HasMaxLength(120);   // varchar(120)
 
             entity.Property(x => x.Country)
-                  .HasMaxLength(80);    // optional, limited length
+                  .HasMaxLength(80);    // limited length
         });
 
         // HasData is applied via migrations. After adding a migration and updating
